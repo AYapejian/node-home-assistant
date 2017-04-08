@@ -33,6 +33,17 @@ homeAssistant.api.callService('light', 'turn_off', { entity_id: 'light.office_hu
 homeAssistant.events.on('ha_events:state_changed', (evt) => console.log(`(ha_events:state_changed) ${JSON.stringify(evt)}`));
 ```
 
+## Developing
+
+* Create a directory/file named `_scratchpad/scratchpad.js`
+    * _This file is ignored by git by default if you want to include a password in there, if not use environment variables or other methods_
+* Add some minimal coding and whatever you happen to be working on
+    ```javascript
+    const config = { baseUrl: 'http://localhost:8123', apiPass: 'supersecretpassword' };
+    const homeAssistant = new HomeAssistant(config);
+    ```
+* Run `npm run dev:watch`
+
 ## TODO
 - [ ] Tests
 - [ ] Reconnect logic
