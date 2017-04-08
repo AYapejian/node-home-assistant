@@ -1,0 +1,11 @@
+{
+  "name": "ha-events",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.15.3",
+    "debug": "^2.6.3",
+    "eventsource": "^0.2.2"
+  }
+}
