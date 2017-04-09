@@ -9,7 +9,7 @@ NOTE: This is a work in progress ymmv.  Currently it's working in my very limite
 Install the module
 
 ```
-npm install AYapejian/node-home-assistant
+npm install node-home-assistant
 ```
 
 Then see usage below or `examples/simple.js` for more details
