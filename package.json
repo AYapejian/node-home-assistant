@@ -1,9 +1,9 @@
 {
   "name": "node-home-assistant",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.js",
   "scripts": {
-      "dev:watch": "DEBUG=home-assistant* nodemon _scratchpad/scratchpad.js"
+    "dev:watch": "DEBUG=home-assistant* nodemon _scratchpad/scratchpad.js"
   },
   "license": "MIT",
   "dependencies": {
