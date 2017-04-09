@@ -49,7 +49,3 @@ homeAssistant.api.getEvents()
 homeAssistant.api.getServices()
     .then(res => console.log(res))
     .catch(e => console.log(e));
-
-
-
-
