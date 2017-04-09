@@ -1,11 +1,17 @@
 {
-  "name": "ha-events",
-  "version": "0.0.1",
+  "name": "node-home-assistant",
+  "version": "0.0.2",
   "main": "index.js",
+  "scripts": {
+    "dev:watch": "DEBUG=home-assistant* nodemon _scratchpad/scratchpad.js"
+  },
   "license": "MIT",
   "dependencies": {
     "axios": "^0.15.3",
     "debug": "^2.6.3",
     "eventsource": "^0.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }
