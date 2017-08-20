@@ -1,10 +1,10 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, no-process-env */
 'use strict';
 const HomeAssistant = require('..');
 
 const config = {
-    baseUrl: 'http://localhost:8123',
-    apiPass: 'supersecretpassword'
+    baseUrl: process.env.HA_URL  || 'http://localhost:8123',
+    apiPass: process.env.HA_PASS || 'supersecretpassword'
 };
 
 const homeAssistant = new HomeAssistant(config);
@@ -20,32 +20,3 @@ homeAssistant.events.on('ha_events:state_changed',    (evt) => console.log(`(ha_
 homeAssistant.events.on('ha_events:service_executed', (evt) => console.log(`(ha_events:service_executed) ${JSON.stringify(evt)}`));
 // Events by event_type and entity_id (if found)
 homeAssistant.events.on('ha_events:state_changed:light.office', (evt) => console.log(`(ha_events:state_changed:light.office) ${JSON.stringify(evt)}`));
-
-// Call a service with domain, service, data
-homeAssistant.api.callService('light', 'turn_off', {
-    entity_id: 'light.office_hue_room'
-}).then(res => console.log('Light switched off', res))
-.catch(e => console.log(e));
-
-// States are tracked and updated internally on state_changed. The states object
-// contains map of [entity_id] to the last 'new_state' for that entity
-console.log(homeAssistant.states);
-// Services are fetched once during initial instantiation
-console.log(homeAssistant.availableServices);
-// Events are fetched once during initial instantiation
-console.log(homeAssistant.availableEvents);
-
-// If needed a fresh set of states can be obtained via
-homeAssistant.api.getStates()
-    .then(res => console.log(res))
-    .catch(e => console.log(e));
-
-// If needed a fresh set of available events can be fetch via
-homeAssistant.api.getEvents()
-    .then(res => console.log(res))
-    .catch(e => console.log(e));
-
-// If needed a fresh set of available services can be fetch via
-homeAssistant.api.getServices()
-    .then(res => console.log(res))
-    .catch(e => console.log(e));
