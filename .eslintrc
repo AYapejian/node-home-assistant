@@ -1,8 +1,17 @@
 {
     "env":     {
-        "node":    true,
-        "mocha":   true,
-        "es6":     true
+        "node":  true,
+        "mocha": true,
+        "es6":   true
+    },
+    "parserOptions": {
+        "ecmaVersion": 8,
+        "ecmaFeatures": {
+            "impliedStrict": true
+        }
+    },
+    "globals": {
+
     },
     "rules": {
         // Strict mode to support babel
@@ -12,7 +21,6 @@
         "no-console":                    1, // disallow use of console (off by default in the node environment)
         "no-constant-condition":         2, // disallow use of constant expressions in conditions
         "no-control-regex":              2, // disallow control characters in regular expressions
-        "no-debugger":                   2, // disallow use of debugger
         "no-dupe-args":                  2, // disallow duplicate arguments in functions
         "no-dupe-keys":                  2, // disallow duplicate keys when creating object literals
         "no-duplicate-case":             2, // disallow a duplicate case label.
@@ -122,5 +130,6 @@
         "comma-dangle":      1,
         "key-spacing":       [1, { "align": "value" }],
         "no-param-reassign": 0,
+        "no-debugger":       1, // disallow use of debugger
     }
 }

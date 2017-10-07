@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
-    "dev:watch": "DEBUG=home-assistant* nodemon _scratchpad/scratchpad.js"
+    "dev:watch": "DEBUG=home-assistant* nodemon _scratchpad/scratchpad.js",
+    "test": "DEBUG=home-assistant* mocha __tests__/**/*.spec.js",
+    "test:watch": "DEBUG=home-assistant* mocha --watch --inspect __tests__/**/*.spec.js"
   },
   "license": "MIT",
   "dependencies": {
@@ -12,6 +14,10 @@
     "eventsource": "^0.2.2"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "mocha": "^4.0.0",
+    "nock": "^9.0.22",
+    "nodemon": "^1.11.0",
+    "should": "^13.1.0",
+    "simple-mock": "^0.8.0"
   }
 }
