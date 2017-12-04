@@ -5,10 +5,7 @@
         "es6":   true
     },
     "parserOptions": {
-        "ecmaVersion": 8,
-        "ecmaFeatures": {
-            "impliedStrict": true
-        }
+        "ecmaVersion": 8
     },
     "globals": {
 
