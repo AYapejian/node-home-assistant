@@ -1,2 +1,1 @@
-'use strict';
-module.exports = require('./lib/_index');
+module.exports = require('./lib/node-home-assistant');
