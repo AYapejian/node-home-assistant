@@ -110,7 +110,7 @@
         "no-plusplus":                   1, // disallow use of unary operators, ++ and -- (off by default)
 
         // Overrides
-        "indent":           [1, 4, {"VariableDeclarator": { "var": 1, "let": 1, "const": 1}}],
+        "indent":           [1, 4, {"VariableDeclarator": { "var": 1, "let": 1, "const": 1}, "SwitchCase": 1 }],
         "max-len":          [1, 200, 4, {"ignoreComments": true}],
         "quote-props":      [1, "consistent-as-needed"],
         "no-cond-assign":   [2, "except-parens"],

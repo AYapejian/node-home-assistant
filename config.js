@@ -57,6 +57,12 @@ const SUB_COMMAND_OPTS = {
         include: process.env.HA_DASHBOARD_INCLUDE || null,
         exclude: process.env.HA_DASHBOARD_EXCLUDE || null
     },
+    // entity and entities are the same, this is a hack until a refactor
+    entity: {
+        include: process.env.HA_ENTITIES_INCLUDE || null,
+        exclude: process.env.HA_ENTITIES_EXCLUDE || null,
+        pretty:  process.env.HA_ENTITIES_PRETTY  || false
+    },
     entities: {
         include: process.env.HA_ENTITIES_INCLUDE || null,
         exclude: process.env.HA_ENTITIES_EXCLUDE || null,
@@ -82,6 +88,13 @@ config.get = function (subCmd, subCmdOpts = {}, globalOpts = {}) {
         return acc;
     }, {})
 
+    if (!SUB_COMMAND_OPTS[subCmd]) {
+        return {
+            globalOpts: globalOpts,
+            subCmdOpts: {}
+        };
+    }
+
     subCmdOpts = Object.keys(SUB_COMMAND_OPTS[subCmd]).reduce((acc, k) => {
         acc[k] = subCmdOpts[k] || SUB_COMMAND_OPTS[subCmd][k];
         return acc;
@@ -89,8 +102,6 @@ config.get = function (subCmd, subCmdOpts = {}, globalOpts = {}) {
 
     if (subCmdOpts.include) { subCmdOpts.include = new RegExp(subCmdOpts.include); }
     if (subCmdOpts.exclude) { subCmdOpts.exclude = new RegExp(subCmdOpts.exclude); }
-    return {
-        globalOpts: globalOpts,
-        subCmdOpts: subCmdOpts
-    };
+    const compiledConfig = { globalOpts, subCmdOpts };
+    return compiledConfig;
 };

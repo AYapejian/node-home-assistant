@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /* eslint-disable no-process-env, no-debugger, no-console */
 'use strict';
-const commander  = require('commander');
+const commander = require('commander');
 const config     = require('../config');
-const haClient   = require('./utils/_ha-client');
-const pkg        = require('../package.json');
+const haClient  = require('./utils/_ha-client');
+const pkg       = require('../package.json');
 
 commander.version(pkg.version)
     .option('-v, --version',                'get version')
@@ -32,6 +32,10 @@ commander.on('--help', function() {
       $ ha entities
       $ ha entities --pretty
       $ ha entities --include '^sensor' --exclude '_motion$|transmission|pihole'
+    * Entity Details:
+      $ ha show entities
+      $ ha show entities group.all_switches
+      $ ha show entities --include sensor
     * Dashboard:
         $ ha dashboard
         $ ha dashboard --include '^sensor' --exclude '_motion$|transmission|pihole'
@@ -97,7 +101,6 @@ commander.command('dashboard')
         require('./dashboard-cmd').exec(cmdConfig, client);
     });
 
-// TODO: Below options
 
 // $ ha service input_boolean turn_off
 // $ ha service home_assistant restart
@@ -118,10 +121,42 @@ commander.command('dashboard')
 // $ ha show event state_changed
 // commander.command('show <service|entity|event>')
 
-// commander.command('show <service|entity|event>')
-//     .description('Get details of a home assistant object')
-//     .action(function(cmd) {
-//         console.log('INFO: ', cmd)
+//
+commander.command('show <entity|entities> [entity_id]')
+    .description('Get all details of one or more home assistant entities, returns only JSON object. If no entity is found JSON object will be empty, no error will be thrown')
+    .option('-i, --include  <regex>',   'include entity_id by regex match, if [entity_id] is supplied this option is ignored.')
+    .option('-e, --exclude <regex>',    'exclude entity_id by regex match, if [entity_id] is supplied this option is ignored')
+    .action(function(cmdName, entity_id, cmdOpts) {
+        // HACK: (This is a hack, commander doesn't like two word commands, that aren't variable, entity and entities are really alias of each other in the 'show' command )
+        // cmdName is <entity|entities>
+        // entity_id is undefined or the supplied entity_id from CLI
+        // cmdOpts are any options supplied from CLI
+        if (cmdName === 'entity' || cmdName === 'entities') {
+            const cmdConfig = config.get(cmdName, cmdOpts, cmdOpts.parent);
+            const client = haClient.get(cmdConfig.globalOpts);
+            require('./show-entity-cmd').exec(cmdConfig, client, entity_id);
+        } else {
+            console.log(`Unknown show sub command '${cmdName}'\n` );
+            commander.outputHelp();
+            process.exit(1);
+        }
+    });
+
+// commander.command('show <service|services> [service_name]')
+//     .description('Get all details of one or more home assistant entities, returns only JSON object. If [service_name] is supplied and entity is not found will exit process with error, otherwise will return empty array')
+//     .option('-i, --include  <regex>',   'include [service_name] by regex match, if target is supplied this option is ignored.')
+//     .option('-e, --exclude <regex>',    'exclude [service_name] by regex match, if target is supplied this option is ignored')
+//     .action(function(cmd, target) {
+//         console.log('show service is not yet implemented');
+//         process.exit(1);
+//     });
+
+// commander.command('show <event|events> [event_name]')
+//     .description('Get all details of one or more home assistant entities, returns only JSON object. If [event_name] is supplied and entity is not found will exit process with error, otherwise will return empty array')
+//     .option('-i, --include  <regex>',   'include [event_name] by regex match, if target is supplied this option is ignored.')
+//     .option('-e, --exclude <regex>',    'exclude [event_name] by regex match, if target is supplied this option is ignored')
+//     .action(function(cmd, target) {
+
 //     });
 
 // commander.command('ping')
@@ -143,7 +178,7 @@ commander.command('dashboard')
 
 commander.command('*')
     .action(function() {
-        console.error('Command not found');
+        console.error('Command not found \n');
         commander.outputHelp();
         process.exit(1);
     });
