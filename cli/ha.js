@@ -36,6 +36,10 @@ commander.on('--help', function() {
       $ ha show entities
       $ ha show entities group.all_switches
       $ ha show entities --include sensor
+    * Calling Services
+      $ ha service light turn_on '{ "entity_id": "light.garage_hue_room" }'
+      $ ha service light turn_off '{ "entity_id": "light.garage_hue_room" }'
+      $ ha service light turn_off
     * Dashboard:
         $ ha dashboard
         $ ha dashboard --include '^sensor' --exclude '_motion$|transmission|pihole'
@@ -101,18 +105,23 @@ commander.command('dashboard')
         require('./dashboard-cmd').exec(cmdConfig, client);
     });
 
+// $ ha service light turn_on '{ "entity_id": "light.garage_hue_room" }'
+commander.command('service <domain> <service> [data]')
+    .description('Calls home assistant service with data provided, outputs the response body from home assistant')
+    .action(function(domain, service, data, commandObj) {
+        if (data) {
+            try {
+                data = JSON.parse(data);
+            } catch (e) {
+                console.error('Supplied data string is not valid JSON, aborting');
+                process.exit(1);
+            }
+        }
 
-// $ ha service input_boolean turn_off
-// $ ha service home_assistant restart
-// $ ha service light turn_on -d entity_id=light.office -d brightness=100 -d transition=5
-// commander.command('service <service_domain> <service>')
-//     .option('-d, --data <keyValue> [...otherKeyValues]',   'key/value pair to send as data, can have many "-d" switches.')
-//     .description('Calls home assistant service with data provided')
-//     .action(function(service_domain, service, keyValue, otherKeyValues) {
-//         console.log(service_domain, service, keyValue, otherKeyValues);
-//         debugger;
-//         console.log('SERVICE: ');
-//     });
+        const cmdConfig = config.get('service', commandObj, commandObj.parent);
+        const client = haClient.get(cmdConfig.globalOpts);
+        require('./service-cmd').exec(cmdConfig, client, domain, service, data);
+    });
 
 
 // $ ha show service light
